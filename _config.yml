@@ -94,7 +94,7 @@ include:
 exclude:
 - ""
 ignore:
-- "scripts/generate-post.js"
+- "**scripts/"
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
