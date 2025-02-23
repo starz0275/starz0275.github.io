@@ -92,7 +92,7 @@ pagination_dir: page
 include:
 - '*.md'
 exclude:
-- "js/test.js"
+- "scripts/generate-post.js"
 ignore:
 
 # Extensions
