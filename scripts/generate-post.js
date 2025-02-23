@@ -5,8 +5,8 @@ const moment = require('moment');
 const title = process.argv[2] || 'Untitled';
 const date = moment();
 const year = date.year();
-const month = date.format('MM');
-const day = date.format('DD');
+const month = date.format('M');
+const day = date.format('D');
 
 let formattedTitle = title;
 if (title === 'G') {
@@ -18,7 +18,7 @@ if (title === 'G') {
 const postContent = `---
 title: ${formattedTitle}
 date: ${date.format('YYYY-MM-DD HH:mm:ss')}
-tags: 
+tags:
 ---
 `;
 
