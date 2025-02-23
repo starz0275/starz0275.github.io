@@ -28,8 +28,7 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
-  - generate-post.js
+skip_render: [scripts/**]
 
 # Writing
 new_post_name: :title:year年:month月:day日.md # File name of new posts
