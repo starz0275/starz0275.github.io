@@ -92,8 +92,9 @@ pagination_dir: page
 include:
 - '*.md'
 exclude:
-- "scripts/generate-post.js"
+- ""
 ignore:
+- "scripts/generate-post.js"
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
