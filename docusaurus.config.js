@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'embedded_learning_web',
+  title: '嵌入式学习记录',
   tagline: 'Dinosaurs are cool',
   favicon: 'img/favicon.ico',
 
@@ -29,6 +29,7 @@ const config = {
   trailingSlash: false,
   // -------------------------------------------------------------
 
+  deploymentBranch: 'gh-pages',
   onBrokenLinks: 'throw',
 
   // Even if you don't use internationalization, you can use this field to set
