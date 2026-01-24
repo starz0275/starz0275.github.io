@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="atom.xsl"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://starz0275.github.io/blog</id>
-    <title>embedded_learning_web Blog</title>
+    <title>嵌入式学习记录 Blog</title>
     <updated>2021-08-26T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://starz0275.github.io/blog"/>
-    <subtitle>embedded_learning_web Blog</subtitle>
+    <subtitle>嵌入式学习记录 Blog</subtitle>
     <icon>https://starz0275.github.io/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>
