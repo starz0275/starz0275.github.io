@@ -86,7 +86,7 @@ const config = {
         title: 'My Site',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          src: 'https://github.com/starz0275.png',
         },
         items: [
           {
