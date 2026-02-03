@@ -12,15 +12,18 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
+        {/* 主标题，默认读取配置文件里的 title  */}
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        {/* 👇 修改这里的副标题 */}
+        <p className="hero__subtitle">嵌入式学习 | C/C++ • STM32 • RTOS • Linux</p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
+            // 👇 修改按钮点击跳转的路径，指向你的笔记入口
             to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
+            🔎查看笔记
           </Link>
         </div>
       </div>

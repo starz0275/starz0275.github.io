@@ -4,32 +4,30 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: 'No.1：C/C++ & 计算机基础',
+    // 暂时沿用默认图片，你可以以后自己替换
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        深入理解<b>C 语言</b>指针与内存管理。结合<b>计算机组成原理</b>，打好数据结构与算法基础。辅以 C++ 面向对象思想。
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'No.2：STM32 & 外设',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        理解 Cortex-M 内核架构。熟练掌握 <b>STM32</b> 的 GPIO、定时器、中断、DMA、通讯接口（UART/I2C/SPI）等外设驱动开发。
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'No.3：RTOS 与 Linux 驱动',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        从裸机迈向操作系统。移植与应用 <b>FreeRTOS</b>，理解多任务调度。进阶挑战 <b>Linux 驱动开发</b>，掌握内核模块与设备树。
       </>
     ),
   },

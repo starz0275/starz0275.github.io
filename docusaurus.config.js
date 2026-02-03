@@ -83,21 +83,29 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'My Site',
+        title: '嵌入式博客',
         logo: {
           alt: 'My Site Logo',
-          src: 'https://github.com/starz0275.png',
+          src: 'img/logo.svg',
         },
         items: [
+          // 第一项：文档
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
-          },
-          {to: '/blog', label: 'Blog', position: 'left'},
+            label: '学习阶段',
+          }, 
+          
+          // 第二项：你的简历
+          {to: '/resume', label: '简历', position: 'left'}, // <--- 这里也要有逗号
+          
+          // 第三项：博客
+          {to: '/blog', label: '博客', position: 'left'}, // <--- 这里也要有逗号
+          
+          // 第四项：GitHub链接
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/starz0275/starz0275.github.io',
             label: 'GitHub',
             position: 'right',
           },
