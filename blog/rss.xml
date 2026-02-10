@@ -4,18 +4,117 @@
         <title>嵌入式学习记录 Blog</title>
         <link>https://starz0275.github.io/blog</link>
         <description>嵌入式学习记录 Blog</description>
-        <lastBuildDate>Tue, 03 Feb 2026 13:50:46 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 10 Feb 2026 14:28:27 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh-Hans</language>
+        <item>
+            <title><![CDATA[Linux项目学习第一天]]></title>
+            <link>https://starz0275.github.io/blog/Jean-blog-post</link>
+            <guid>https://starz0275.github.io/blog/Jean-blog-post</guid>
+            <pubDate>Tue, 10 Feb 2026 14:28:27 GMT</pubDate>
+            <description><![CDATA[1. 项目背景与目标]]></description>
+            <content:encoded><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-项目背景与目标">1. 项目背景与目标<a href="https://starz0275.github.io/blog/Jean-blog-post#1-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF%E4%B8%8E%E7%9B%AE%E6%A0%87" class="hash-link" aria-label="1. 项目背景与目标的直接链接" title="1. 项目背景与目标的直接链接" translate="no">​</a></h2>
+<p>为了深入掌握嵌入式 Linux 应用开发，我启动了一个名为 <strong>“基于多线程与 I/O 多路复用的物联网边缘计算网关”</strong> 的项目。</p>
+<p>该项目的核心目标是构建一个能够高效连接底层感知设备（STM32）与上层云端应用（PC/Server）的中间件。它不仅仅是一个简单的数据透传工具，更是一个包含<strong>数据解析、环形缓冲、多线程并发、网络转发</strong>的完整边缘计算节点。</p>
+<p>本文记录了 <strong>V1.0 版本（最小可行性系统）</strong> 的开发过程与技术沉淀。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-系统架构-v10">2. 系统架构 (V1.0)<a href="https://starz0275.github.io/blog/Jean-blog-post#2-%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84-v10" class="hash-link" aria-label="2. 系统架构 (V1.0)的直接链接" title="2. 系统架构 (V1.0)的直接链接" translate="no">​</a></h2>
+<p>在 V1.0 阶段，主要任务是打通 <strong>硬件层（STM32）</strong> 到 <strong>传输层（Linux 串口）</strong> 的数据链路。</p>
+<p><strong>数据流向图：</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">[STM32 单片机]  ----&gt;  [USB转串口线]  ----&gt;  [VMware Linux]  ----&gt;  [终端显示]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">(模拟光照数据)         (物理传输层)          (应用层 C程序)         (解析结果)</span><br></span></code></pre></div></div>
+<p><strong>环境配置：</strong></p>
+<ul>
+<li class="">
+<p><strong>硬件</strong>：STM32F103 开发板 + 光敏电阻（模拟）</p>
+</li>
+<li class="">
+<p><strong>宿主机</strong>：Windows 11 + VMware Workstation</p>
+<p><strong>开发环境</strong>：Ubuntu 18.04 LTS + GCC + VS Code</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-核心技术实现">3. 核心技术实现<a href="https://starz0275.github.io/blog/Jean-blog-post#3-%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0" class="hash-link" aria-label="3. 核心技术实现的直接链接" title="3. 核心技术实现的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="31-固件端模拟数据源与协议打包">3.1 固件端：模拟数据源与协议打包<a href="https://starz0275.github.io/blog/Jean-blog-post#31-%E5%9B%BA%E4%BB%B6%E7%AB%AF%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E6%BA%90%E4%B8%8E%E5%8D%8F%E8%AE%AE%E6%89%93%E5%8C%85" class="hash-link" aria-label="3.1 固件端：模拟数据源与协议打包的直接链接" title="3.1 固件端：模拟数据源与协议打包的直接链接" translate="no">​</a></h3>
+<p>为了在硬件传感器未完全就绪的情况下先行开发软件业务，我在 STM32 端采用了 <strong>Mock Data（模拟数据）</strong> 的设计思路。</p>
+<ul>
+<li class=""><strong>模拟数据生成</strong>：在主循环中让光照数值在 <code>0~4000</code> 之间线性循环，便于接收端通过数据连续性判断是否丢包。</li>
+<li class=""><strong>底层驱动</strong>：使用 STM32 HAL 库的 <code>HAL_UART_Transmit</code> 实现阻塞式发送。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="32-协议层自定义通信协议设计">3.2 协议层：自定义通信协议设计<a href="https://starz0275.github.io/blog/Jean-blog-post#32-%E5%8D%8F%E8%AE%AE%E5%B1%82%E8%87%AA%E5%AE%9A%E4%B9%89%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E8%AE%BE%E8%AE%A1" class="hash-link" aria-label="3.2 协议层：自定义通信协议设计的直接链接" title="3.2 协议层：自定义通信协议设计的直接链接" translate="no">​</a></h3>
+<p>为了解决串口通信中常见的“粘包”和“数据错位”问题，我设计了一套基于 <strong>TLV (Type-Length-Value)</strong> 思想的二进制通信协议。</p>
+<p><strong>协议帧结构定义 (<code>protocol.h</code>)：</strong></p>
+<table><thead><tr><th>帧头 (2B)</th><th>命令 (1B)</th><th>长度 (1B)</th><th>数据载荷 (N Byte)</th><th>校验和 (1B)</th></tr></thead><tbody><tr><td><code>0xAA 0x55</code></td><td><code>0x01</code></td><td><code>0x04</code></td><td><code>[光照低] [光照高] [LED] [保留]</code></td><td>Checksum</td></tr></tbody></table>
+<p><strong>关键技术点：</strong></p>
+<ul>
+<li class=""><strong>字节对齐</strong>：在定义结构体时使用了 <code>__attribute__((packed))</code>，强制取消编译器的内存对齐优化，确保结构体在内存中的布局与网络传输字节流完全一致。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="33-应用层linux-串口编程">3.3 应用层：Linux 串口编程<a href="https://starz0275.github.io/blog/Jean-blog-post#33-%E5%BA%94%E7%94%A8%E5%B1%82linux-%E4%B8%B2%E5%8F%A3%E7%BC%96%E7%A8%8B" class="hash-link" aria-label="3.3 应用层：Linux 串口编程的直接链接" title="3.3 应用层：Linux 串口编程的直接链接" translate="no">​</a></h3>
+<p>这是 V1.0 版本最核心的工作。在 Linux 环境下，一切皆文件。通过操作 <code>/dev/ttyACM0</code> 设备文件，实现了数据的实时读取。</p>
+<p><strong>Termios 配置要点：</strong> 为了确保传输二进制数据时不被操作系统“篡改”（例如将 <code>0x0D</code> 自动转换为 <code>0x0A</code>），必须将串口配置为 <strong>Raw Mode（原始模式）</strong>：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">// 关键配置代码片段</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">struct termios options;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">tcgetattr(fd, &amp;options);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭规范模式、回显、信号响应</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_lflag &amp;= ~(ICANON | ECHO | ECHOE | ISIG);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭软件流控</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_iflag &amp;= ~(IXON | IXOFF | IXANY); </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭回车转换</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_iflag &amp;= ~(ICRNL | INLCR);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭输出处理</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_oflag &amp;= ~OPOST; </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">tcsetattr(fd, TCSANOW, &amp;options);</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="34-算法层状态机解析">3.4 算法层：状态机解析<a href="https://starz0275.github.io/blog/Jean-blog-post#34-%E7%AE%97%E6%B3%95%E5%B1%82%E7%8A%B6%E6%80%81%E6%9C%BA%E8%A7%A3%E6%9E%90" class="hash-link" aria-label="3.4 算法层：状态机解析的直接链接" title="3.4 算法层：状态机解析的直接链接" translate="no">​</a></h3>
+<p>在接收端，实现了一个简单的状态机逻辑。程序在接收到的 HEX 数据流中实时检索帧头 <code>0xAA 0x55</code>，一旦锁定帧头，即读取后续指令与数据，并进行校验。</p>
+<p><strong>解析效果：</strong> Linux 终端成功接收并还原了 STM32 发送的物理数据：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">[收到数据包] ==================</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  原始 HEX: AA 55 01 04 C8 00 00 00 C2</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &gt;&gt;&gt; 传感器上报 &lt;&lt;&lt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  光照强度: 200</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  LED 状态: OFF</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-遇到的坑与解决方案">4. 遇到的坑与解决方案<a href="https://starz0275.github.io/blog/Jean-blog-post#4-%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88" class="hash-link" aria-label="4. 遇到的坑与解决方案的直接链接" title="4. 遇到的坑与解决方案的直接链接" translate="no">​</a></h2>
+<ol>
+<li class=""><strong>WSL 2 的串口驱动问题</strong>： 起初尝试在 WSL 2 环境下开发，遭遇了严重的 <code>Input/output error</code>。分析发现 WSL 对 USB 转串口设备的直接映射在高波特率下极不稳定。 <strong>解决</strong>：果断迁移至 <strong>VMware 虚拟机</strong>，利用其 USB 物理透传功能，彻底解决了驱动不稳的问题。</li>
+<li class=""><strong>Keil 编译器兼容性</strong>： 在移植协议头文件到 STM32 时，遇到了 C90 标准不支持柔性数组 <code>data[0]</code> 的报错。 <strong>解决</strong>：修改为 <code>data[1]</code> 或开启 C99 模式，解决了编译错误。</li>
+</ol>]]></content:encoded>
+            <category>Linux</category>
+            <category>项目</category>
+        </item>
         <item>
             <title><![CDATA[我的第一篇博客：博客网站信息更新]]></title>
             <link>https://starz0275.github.io/blog/Jean-blog-post</link>
             <guid>https://starz0275.github.io/blog/Jean-blog-post</guid>
             <pubDate>Tue, 03 Feb 2026 13:50:46 GMT</pubDate>
             <description><![CDATA[这是我的第一篇博客文章。]]></description>
-            <content:encoded><![CDATA[<p>这是我的第一篇博客文章。
-今天我配置好了 Docusaurus 网站，过程虽然曲折，但学到了很多博客配置的知识，了解了这个网站的结构，往后多多记录我的嵌入式学习过程。</p>]]></content:encoded>
+            <content:encoded><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-项目背景与目标">1. 项目背景与目标<a href="https://starz0275.github.io/blog/Jean-blog-post#1-%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF%E4%B8%8E%E7%9B%AE%E6%A0%87" class="hash-link" aria-label="1. 项目背景与目标的直接链接" title="1. 项目背景与目标的直接链接" translate="no">​</a></h2>
+<p>为了深入掌握嵌入式 Linux 应用开发，我启动了一个名为 <strong>“基于多线程与 I/O 多路复用的物联网边缘计算网关”</strong> 的项目。</p>
+<p>该项目的核心目标是构建一个能够高效连接底层感知设备（STM32）与上层云端应用（PC/Server）的中间件。它不仅仅是一个简单的数据透传工具，更是一个包含<strong>数据解析、环形缓冲、多线程并发、网络转发</strong>的完整边缘计算节点。</p>
+<p>本文记录了 <strong>V1.0 版本（最小可行性系统）</strong> 的开发过程与技术沉淀。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-系统架构-v10">2. 系统架构 (V1.0)<a href="https://starz0275.github.io/blog/Jean-blog-post#2-%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84-v10" class="hash-link" aria-label="2. 系统架构 (V1.0)的直接链接" title="2. 系统架构 (V1.0)的直接链接" translate="no">​</a></h2>
+<p>在 V1.0 阶段，主要任务是打通 <strong>硬件层（STM32）</strong> 到 <strong>传输层（Linux 串口）</strong> 的数据链路。</p>
+<p><strong>数据流向图：</strong></p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">[STM32 单片机]  ----&gt;  [USB转串口线]  ----&gt;  [VMware Linux]  ----&gt;  [终端显示]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">(模拟光照数据)         (物理传输层)          (应用层 C程序)         (解析结果)</span><br></span></code></pre></div></div>
+<p><strong>环境配置：</strong></p>
+<ul>
+<li class="">
+<p><strong>硬件</strong>：STM32F103 开发板 + 光敏电阻（模拟）</p>
+</li>
+<li class="">
+<p><strong>宿主机</strong>：Windows 11 + VMware Workstation</p>
+<p><strong>开发环境</strong>：Ubuntu 18.04 LTS + GCC + VS Code</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-核心技术实现">3. 核心技术实现<a href="https://starz0275.github.io/blog/Jean-blog-post#3-%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0" class="hash-link" aria-label="3. 核心技术实现的直接链接" title="3. 核心技术实现的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="31-固件端模拟数据源与协议打包">3.1 固件端：模拟数据源与协议打包<a href="https://starz0275.github.io/blog/Jean-blog-post#31-%E5%9B%BA%E4%BB%B6%E7%AB%AF%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E6%BA%90%E4%B8%8E%E5%8D%8F%E8%AE%AE%E6%89%93%E5%8C%85" class="hash-link" aria-label="3.1 固件端：模拟数据源与协议打包的直接链接" title="3.1 固件端：模拟数据源与协议打包的直接链接" translate="no">​</a></h3>
+<p>为了在硬件传感器未完全就绪的情况下先行开发软件业务，我在 STM32 端采用了 <strong>Mock Data（模拟数据）</strong> 的设计思路。</p>
+<ul>
+<li class=""><strong>模拟数据生成</strong>：在主循环中让光照数值在 <code>0~4000</code> 之间线性循环，便于接收端通过数据连续性判断是否丢包。</li>
+<li class=""><strong>底层驱动</strong>：使用 STM32 HAL 库的 <code>HAL_UART_Transmit</code> 实现阻塞式发送。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="32-协议层自定义通信协议设计">3.2 协议层：自定义通信协议设计<a href="https://starz0275.github.io/blog/Jean-blog-post#32-%E5%8D%8F%E8%AE%AE%E5%B1%82%E8%87%AA%E5%AE%9A%E4%B9%89%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E8%AE%BE%E8%AE%A1" class="hash-link" aria-label="3.2 协议层：自定义通信协议设计的直接链接" title="3.2 协议层：自定义通信协议设计的直接链接" translate="no">​</a></h3>
+<p>为了解决串口通信中常见的“粘包”和“数据错位”问题，我设计了一套基于 <strong>TLV (Type-Length-Value)</strong> 思想的二进制通信协议。</p>
+<p><strong>协议帧结构定义 (<code>protocol.h</code>)：</strong></p>
+<table><thead><tr><th>帧头 (2B)</th><th>命令 (1B)</th><th>长度 (1B)</th><th>数据载荷 (N Byte)</th><th>校验和 (1B)</th></tr></thead><tbody><tr><td><code>0xAA 0x55</code></td><td><code>0x01</code></td><td><code>0x04</code></td><td><code>[光照低] [光照高] [LED] [保留]</code></td><td>Checksum</td></tr></tbody></table>
+<p><strong>关键技术点：</strong></p>
+<ul>
+<li class=""><strong>字节对齐</strong>：在定义结构体时使用了 <code>__attribute__((packed))</code>，强制取消编译器的内存对齐优化，确保结构体在内存中的布局与网络传输字节流完全一致。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="33-应用层linux-串口编程">3.3 应用层：Linux 串口编程<a href="https://starz0275.github.io/blog/Jean-blog-post#33-%E5%BA%94%E7%94%A8%E5%B1%82linux-%E4%B8%B2%E5%8F%A3%E7%BC%96%E7%A8%8B" class="hash-link" aria-label="3.3 应用层：Linux 串口编程的直接链接" title="3.3 应用层：Linux 串口编程的直接链接" translate="no">​</a></h3>
+<p>这是 V1.0 版本最核心的工作。在 Linux 环境下，一切皆文件。通过操作 <code>/dev/ttyACM0</code> 设备文件，实现了数据的实时读取。</p>
+<p><strong>Termios 配置要点：</strong> 为了确保传输二进制数据时不被操作系统“篡改”（例如将 <code>0x0D</code> 自动转换为 <code>0x0A</code>），必须将串口配置为 <strong>Raw Mode（原始模式）</strong>：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">// 关键配置代码片段</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">struct termios options;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">tcgetattr(fd, &amp;options);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭规范模式、回显、信号响应</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_lflag &amp;= ~(ICANON | ECHO | ECHOE | ISIG);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭软件流控</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_iflag &amp;= ~(IXON | IXOFF | IXANY); </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭回车转换</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_iflag &amp;= ~(ICRNL | INLCR);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// 关闭输出处理</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">options.c_oflag &amp;= ~OPOST; </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">tcsetattr(fd, TCSANOW, &amp;options);</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="34-算法层状态机解析">3.4 算法层：状态机解析<a href="https://starz0275.github.io/blog/Jean-blog-post#34-%E7%AE%97%E6%B3%95%E5%B1%82%E7%8A%B6%E6%80%81%E6%9C%BA%E8%A7%A3%E6%9E%90" class="hash-link" aria-label="3.4 算法层：状态机解析的直接链接" title="3.4 算法层：状态机解析的直接链接" translate="no">​</a></h3>
+<p>在接收端，实现了一个简单的状态机逻辑。程序在接收到的 HEX 数据流中实时检索帧头 <code>0xAA 0x55</code>，一旦锁定帧头，即读取后续指令与数据，并进行校验。</p>
+<p><strong>解析效果：</strong> Linux 终端成功接收并还原了 STM32 发送的物理数据：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">[收到数据包] ==================</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  原始 HEX: AA 55 01 04 C8 00 00 00 C2</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &gt;&gt;&gt; 传感器上报 &lt;&lt;&lt;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  光照强度: 200</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  LED 状态: OFF</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-遇到的坑与解决方案">4. 遇到的坑与解决方案<a href="https://starz0275.github.io/blog/Jean-blog-post#4-%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88" class="hash-link" aria-label="4. 遇到的坑与解决方案的直接链接" title="4. 遇到的坑与解决方案的直接链接" translate="no">​</a></h2>
+<ol>
+<li class=""><strong>WSL 2 的串口驱动问题</strong>： 起初尝试在 WSL 2 环境下开发，遭遇了严重的 <code>Input/output error</code>。分析发现 WSL 对 USB 转串口设备的直接映射在高波特率下极不稳定。 <strong>解决</strong>：果断迁移至 <strong>VMware 虚拟机</strong>，利用其 USB 物理透传功能，彻底解决了驱动不稳的问题。</li>
+<li class=""><strong>Keil 编译器兼容性</strong>： 在移植协议头文件到 STM32 时，遇到了 C90 标准不支持柔性数组 <code>data[0]</code> 的报错。 <strong>解决</strong>：修改为 <code>data[1]</code> 或开启 C99 模式，解决了编译错误。</li>
+</ol>]]></content:encoded>
             <category>博客</category>
             <category>记录</category>
         </item>

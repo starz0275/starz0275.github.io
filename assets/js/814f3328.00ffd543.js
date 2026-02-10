@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkmy_website=globalThis.webpackChunkmy_website||[]).push([[472],{5513(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"\u6211\u7684\u7b2c\u4e00\u7bc7\u535a\u5ba2\uff1a\u535a\u5ba2\u7f51\u7ad9\u4fe1\u606f\u66f4\u65b0","permalink":"/blog/Jean-blog-post","unlisted":false,"date":"2026-02-03T13:50:46.000Z"}]}')}}]);
