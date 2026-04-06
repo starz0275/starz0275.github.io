@@ -23,7 +23,7 @@ const FeatureList = [
     ),
   },
   {
-    title: 'No.3：RTOS 与 Linux 驱动',
+    title: 'No.3：RTOS 与 Linux 开发',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>

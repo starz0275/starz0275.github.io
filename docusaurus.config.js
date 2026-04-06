@@ -83,7 +83,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: '嵌入式博客',
+        title: 'Nie Xujing的博客',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
@@ -94,12 +94,13 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: '学习阶段',
+            label: '项目记录',
           }, 
           
           // 第二项：你的简历
           {to: '/resume', label: '简历', position: 'left'}, // <--- 这里也要有逗号
-          
+
+          {to: '/blog/tags/面试', label: '面试', position: 'left'},
           // 第三项：博客
           {to: '/blog', label: '博客', position: 'left'}, // <--- 这里也要有逗号
           
