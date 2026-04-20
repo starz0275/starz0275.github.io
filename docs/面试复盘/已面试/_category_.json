@@ -1,0 +1,8 @@
+{
+  "label": "已面试",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "已完成面试的复盘记录"
+  }
+}

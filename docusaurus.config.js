@@ -100,7 +100,7 @@ const config = {
           // 第二项：你的简历
           {to: '/resume', label: '简历', position: 'left'}, // <--- 这里也要有逗号
 
-          {to: '/blog/tags/面试', label: '面试', position: 'left'},
+          {to: '/docs/category/面试复盘', label: '面试复盘', position: 'left'},
           // 第三项：博客
           {to: '/blog', label: '博客', position: 'left'}, // <--- 这里也要有逗号
           
