@@ -11,30 +11,22 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: '嵌入式学习记录',
-  tagline: 'Dinosaurs are cool',
-  favicon: 'img/favicon.ico',
+  tagline: 'C/C++ · STM32 · RTOS · Linux 学习笔记',
+  favicon: 'img/favicon.svg',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: true,
   },
 
-  // -------------------------------------------------------------
-  // ✅ 你的 GitHub Pages 配置已合并到这里
-  // -------------------------------------------------------------
-  url: 'https://starz0275.github.io', 
-  baseUrl: '/', 
-  organizationName: 'starz0275', 
-  projectName: 'starz0275.github.io', 
+  url: 'https://starz0275.github.io',
+  baseUrl: '/',
+  organizationName: 'starz0275',
+  projectName: 'starz0275.github.io',
   trailingSlash: false,
-  // -------------------------------------------------------------
 
   deploymentBranch: 'gh-pages',
   onBrokenLinks: 'throw',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'zh-Hans',
     locales: ['zh-Hans'],
@@ -47,10 +39,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/starz0275/starz0275.github.io/tree/main/',
         },
         blog: {
           showReadingTime: true,
@@ -58,11 +47,7 @@ const config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
+          editUrl: 'https://github.com/starz0275/starz0275.github.io/tree/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -77,34 +62,26 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/logo.svg',
       colorMode: {
         respectPrefersColorScheme: true,
       },
       navbar: {
         title: 'Nie Xujing的博客',
         logo: {
-          alt: 'My Site Logo',
+          alt: '嵌入式学习记录',
           src: 'img/logo.svg',
         },
         items: [
-          // 第一项：文档
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: '项目记录',
-          }, 
-          
-          // 第二项：你的简历
-          {to: '/resume', label: '简历', position: 'left'}, // <--- 这里也要有逗号
-
+          },
+          {to: '/resume', label: '简历', position: 'left'},
           {to: '/docs/category/面试复盘', label: '面试复盘', position: 'left'},
-          // 第三项：博客
-          {to: '/blog', label: '博客', position: 'left'}, // <--- 这里也要有逗号
-          
-          // 第四项：GitHub链接
+          {to: '/blog', label: '博客', position: 'left'},
           {
             href: 'https://github.com/starz0275/starz0275.github.io',
             label: 'GitHub',
@@ -116,46 +93,33 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: '内容',
             items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
+              {label: '项目记录', to: '/docs/intro'},
+              {label: '简历', to: '/resume'},
+              {label: '面试复盘', to: '/docs/category/面试复盘'},
+              {label: '博客', to: '/blog'},
             ],
           },
           {
-            title: 'Community',
+            title: '链接',
             items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'X',
-                href: 'https://x.com/docusaurus',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/starz0275/starz0275.github.io',
+              },
+              {
+                label: 'CSDN',
+                href: 'https://blog.csdn.net/niexujing',
+              },
+              {
+                label: 'LinkedIn',
+                href: 'https://www.linkedin.com/in/%E6%97%AD%E6%99%B6-%E8%81%82-2696a53a1/',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} 聂旭晶. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
