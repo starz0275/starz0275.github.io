@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://starz0275.github.io/blog"/>
     <subtitle>嵌入式学习记录 Blog</subtitle>
-    <icon>https://starz0275.github.io/img/favicon.ico</icon>
+    <icon>https://starz0275.github.io/img/favicon.svg</icon>
     <entry>
         <title type="html"><![CDATA[字节人因实习生]]></title>
         <id>https://starz0275.github.io/blog/No.1_interview</id>
@@ -43,7 +43,7 @@
 </ul>]]></content>
         <author>
             <name>Xujing Nie</name>
-            <uri>https://linkedin.com/in/xujing</uri>
+            <uri>https://www.linkedin.com/in/%E6%97%AD%E6%99%B6-%E8%81%82-2696a53a1/</uri>
         </author>
         <category label="面试" term="面试"/>
         <category label="人因" term="人因"/>
@@ -103,7 +103,7 @@
 </ol>]]></content>
         <author>
             <name>Xujing Nie</name>
-            <uri>https://linkedin.com/in/xujing</uri>
+            <uri>https://www.linkedin.com/in/%E6%97%AD%E6%99%B6-%E8%81%82-2696a53a1/</uri>
         </author>
         <category label="Linux" term="Linux"/>
         <category label="项目" term="项目"/>
@@ -118,7 +118,7 @@
 今天我配置好了 Docusaurus 网站，过程虽然曲折，但学到了很多博客配置的知识，了解了这个网站的结构，往后多多记录我的嵌入式学习过程。</p>]]></content>
         <author>
             <name>Xujing Nie</name>
-            <uri>https://linkedin.com/in/xujing</uri>
+            <uri>https://www.linkedin.com/in/%E6%97%AD%E6%99%B6-%E8%81%82-2696a53a1/</uri>
         </author>
         <category label="博客" term="博客"/>
         <category label="记录" term="记录"/>
