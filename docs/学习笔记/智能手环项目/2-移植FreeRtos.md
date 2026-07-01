@@ -1,3 +1,9 @@
+---
+sidebar_position: 2
+sidebar_label: '（2）移植 FreeRTOS'
+title: 智能手环移植 FreeRTOS
+---
+
 优化之前比赛项目，加入实时操作系统。
 
 移植后的目录结构已整理完毕（截图待补充）。

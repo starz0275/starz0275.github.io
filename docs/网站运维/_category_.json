@@ -1,6 +1,7 @@
 {
-  "label": "网站记录",
-  "position": 3,
+  "label": "网站运维",
+  "position": 99,
+  "collapsed": true,
   "link": {
     "type": "generated-index"
   }

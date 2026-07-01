@@ -1,0 +1,9 @@
+{
+  "label": "简历",
+  "position": 2,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "description": "按求职方向定制的个人简历，点击卡片查看对应版本"
+  }
+}

@@ -1,11 +1,16 @@
 ---
 sidebar_position: 1
 # sidebar_label: 控制左侧菜单栏显示的文字
-sidebar_label: '转码记录' 
+sidebar_label: '1. 转码记录' 
 # title: 控制页面中间显示的大标题
-title: '嵌入式学习路线图' 
+title: '嵌入式学习路线图'
 ---
 欢迎来到我的嵌入式学习笔记。这里记录了我从 C 语言入门到精通 Linux 驱动的过程...
 
+飞书记录学习阶段如下：
 
-![alt text](./image/image.png)
+嵌入式第一段实习：人工生产力（4.22-5.9）
+
+嵌入式第二段实习：经纬恒润（5.13-至今）
+
+![1782884881592](image/intro/1782884881592.png)

@@ -1,0 +1,9 @@
+{
+  "label": "学习笔记",
+  "position": 3,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "description": "嵌入式学习路线、项目实践与 RTOS 笔记"
+  }
+}

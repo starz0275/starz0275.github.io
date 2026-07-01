@@ -77,10 +77,15 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: '项目记录',
+            label: '复盘记录',
           },
-          {to: '/resume', label: '简历', position: 'left'},
-          {to: '/docs/category/面试复盘', label: '面试复盘', position: 'left'},
+          {
+            type: 'docSidebar',
+            sidebarId: 'resumeSidebar',
+            position: 'left',
+            label: '简历',
+          },
+    
           {to: '/blog', label: '博客', position: 'left'},
           {
             href: 'https://github.com/starz0275/starz0275.github.io',
@@ -95,9 +100,9 @@ const config = {
           {
             title: '内容',
             items: [
-              {label: '项目记录', to: '/docs/intro'},
-              {label: '简历', to: '/resume'},
-              {label: '面试复盘', to: '/docs/category/面试复盘'},
+              {label: '复盘记录', to: '/docs/intro'},
+              {label: '简历', to: '/docs/category/简历'},
+            
               {label: '博客', to: '/blog'},
             ],
           },
